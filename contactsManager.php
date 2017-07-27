@@ -34,12 +34,35 @@ function mainMenu($userName)
 		case 2:
 			fwrite(STDOUT,"Enter first name: ");
 			$first = trim(fgets(STDIN));
+			while ($first == "" || preg_match("#[0-9]#", $first)){
+				echo "Enter a real name bro" . PHP_EOL;
+				$first = trim(fgets(STDIN));
+			}
 			fwrite(STDOUT,"Enter last name: ");
 			$last = trim(fgets(STDIN));
+			while ($last == "" || preg_match("#[0-9]#", $last)){
+				echo "Enter a real name bro" . PHP_EOL;
+				$last = trim(fgets(STDIN));
+			}
+
+
 			fwrite(STDOUT,"Enter phone number: ");
 			$number = trim(fgets(STDIN));
+			while (strlen($number) !== 10) {
+				echo "Please enter a 10 digit phone number" . PHP_EOL;
+				$number = trim(fgets(STDIN));
+			}
+
+
 			fwrite(STDOUT,"Enter email: ");
 			$email = trim(fgets(STDIN));
+			while (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+				echo "Please enter a valid Email brosif" . PHP_EOL;
+				$email = trim(fgets(STDIN));
+			}
+
+
+
 		    addContact($first,$last,$number,$email,$userName);
 		    echo "DID IT!!";
 		    break;
