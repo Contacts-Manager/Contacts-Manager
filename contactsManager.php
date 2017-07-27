@@ -9,6 +9,15 @@ function append($filename,$stringToWrite)
 	fclose($handle);
 }
 
+function nukeThenWrite($filename,$stringToWrite)
+{
+	$handle = fopen($filename, "w");
+	fwrite($handle,$stringToWrite);
+	fclose($handle);
+}
+
+
+
 function userInput()
 {
 
@@ -42,7 +51,11 @@ function userInput()
 		    searchContacts($search);
 		    break;
 		case 4:
-		    deleteContact();
+			fwrite(STDOUT,"Enter the first name of the contact to delete: ");
+			$delFirst = trim(fgets(STDIN));
+			fwrite(STDOUT,"Enter the last name of the contact to delete: ");
+			$delLast = trim(fgets(STDIN));
+		    deleteContact($delFirst,$delLast);
 		    break;
 		case 5:
 		    exitManager();
@@ -54,7 +67,7 @@ function userInput()
 	}
 }
 
-userInput();
+
 
 function showContacts()
 {
@@ -70,9 +83,7 @@ function showContacts()
 function addContact($first,$last,$number,$email)
 {
 	$message = "$first $last, $number, $email" . PHP_EOL;
-
 	append("contacts.txt",$message);
-
 }
 
 function searchContacts($search)
@@ -83,30 +94,36 @@ function searchContacts($search)
 	$contentsArray = explode("\n", $contents);
 	// print_r($contentsArray);
 	foreach($contentsArray as $key => $contact){
-	if(strstr($contact,$search) !== false){
-		echo $contact. PHP_EOL;
-	} else {
-		echo "BALLS!";
+		if(strstr($contact,$search) !== false){
+			echo $contact. PHP_EOL;
+		} else {
+			echo "Could not find a contact with that search criteria!" . PHP_EOL;
+		}
 	}
 }
 
-
-
-
-
-
-
-
-	// foreach($contentsArray as $contact){
-	// 	explode(", " , $contact);
-
-	// 	if(in_array($search, $contact)){
-	// 		echo $contact;
-	// 	} else {
-	// 		echo "fuck you brah search better!";
-	// 	}
-	// }
+function deleteContact($delFirst,$delLast){
+	$newContent = [];
+	$filename = "contacts.txt";
+	$handle = fopen($filename, 'r');
+	$contents = trim(fread($handle, filesize($filename)));
+	$contentsArray = explode("\n", $contents);
+	// print_r($contentsArray);
+	foreach($contentsArray as $key => $contact){
+		if((strstr($contact,$delFirst) === false) && (strstr($contact,$delLast) === false)){
+			array_push($newContent,$contact);
+			$newString = implode("\n",$newContent);
+		}	
+	}
+	nukeThenWrite('contacts.txt',$newString);
+	fclose($handle);
 }
+
+
+
+
+
+userInput();
 
 
 
