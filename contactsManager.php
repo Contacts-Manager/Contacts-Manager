@@ -9,6 +9,15 @@ function append($filename,$stringToWrite)
 	fclose($handle);
 }
 
+function nukeThenWrite($filename,$stringToWrite)
+{
+	$handle = fopen($filename, "w");
+	fwrite($handle,$stringToWrite);
+	fclose($handle);
+}
+
+
+
 function userInput()
 {
 
@@ -34,13 +43,19 @@ function userInput()
 			fwrite(STDOUT,"Enter email: ");
 			$email = trim(fgets(STDIN));
 		    addContact($first,$last,$number,$email);
-		    echo "DIDI IT!!";
+		    echo "DID IT!!";
 		    break;
 		case 3:
-		    searchContacts();
+			fwrite(STDOUT,"Enter a name or part of a name to search: ");
+			$search = trim(fgets(STDIN));
+		    searchContacts($search);
 		    break;
 		case 4:
-		    deleteContact();
+			fwrite(STDOUT,"Enter the first name of the contact to delete: ");
+			$delFirst = trim(fgets(STDIN));
+			fwrite(STDOUT,"Enter the last name of the contact to delete: ");
+			$delLast = trim(fgets(STDIN));
+		    deleteContact($delFirst,$delLast);
 		    break;
 		case 5:
 		    exitManager();
@@ -52,15 +67,7 @@ function userInput()
 	}
 }
 
-userInput();
 
-function addContact($first,$last,$number,$email)
-{
-	$message = "$first $last, $number, $email" . PHP_EOL;
-
-	append("contacts.txt",$message);
-
-}
 
 function showContacts()
 {
@@ -70,9 +77,53 @@ function showContacts()
 	fclose($handle);
 	echo $contents;
 	return $contents;
-
-
 }
+
+
+function addContact($first,$last,$number,$email)
+{
+	$message = "$first $last, $number, $email" . PHP_EOL;
+	append("contacts.txt",$message);
+}
+
+function searchContacts($search)
+{
+	$filename = "contacts.txt";
+	$handle = fopen($filename, 'r');
+	$contents = trim(fread($handle, filesize($filename)));
+	$contentsArray = explode("\n", $contents);
+	// print_r($contentsArray);
+	foreach($contentsArray as $key => $contact){
+		if(strstr($contact,$search) !== false){
+			echo $contact. PHP_EOL;
+		} else {
+			echo "Could not find a contact with that search criteria!" . PHP_EOL;
+		}
+	}
+}
+
+function deleteContact($delFirst,$delLast){
+	$newContent = [];
+	$filename = "contacts.txt";
+	$handle = fopen($filename, 'r');
+	$contents = trim(fread($handle, filesize($filename)));
+	$contentsArray = explode("\n", $contents);
+	// print_r($contentsArray);
+	foreach($contentsArray as $key => $contact){
+		if((strstr($contact,$delFirst) === false) && (strstr($contact,$delLast) === false)){
+			array_push($newContent,$contact);
+			$newString = implode("\n",$newContent);
+		}	
+	}
+	nukeThenWrite('contacts.txt',$newString);
+	fclose($handle);
+}
+
+
+
+
+
+userInput();
 
 
 
