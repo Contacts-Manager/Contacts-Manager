@@ -1,6 +1,9 @@
 
 
 <?php
+fwrite(STDOUT,"What is your name?");
+$userName = trim(fgets(STDIN));
+
 
 function append($filename,$stringToWrite)
 {
@@ -18,8 +21,9 @@ function nukeThenWrite($filename,$stringToWrite)
 
 
 
-function userInput()
+function userInput($userName)
 {
+
 
 	fwrite(STDOUT,"Enter 1 to VIEW ALL contacts" . PHP_EOL .
 		"Enter 2 to ADD a new contact" . PHP_EOL . 
@@ -58,7 +62,7 @@ function userInput()
 		    deleteContact($delFirst,$delLast);
 		    break;
 		case 5:
-			echo "Bye Felecia!!!!! " . PHP_EOL;
+			echo "Bye $userName!!!!! " . PHP_EOL;
 		    break;
 		default: 
 			echo "thats not a correct input\n";
@@ -106,7 +110,8 @@ function searchContacts($search)
 	return $contact;
 }
 
-function deleteContact($delFirst,$delLast){
+function deleteContact($delFirst,$delLast)
+{
 	$newContent = [];
 	$filename = "contacts.txt";
 	$handle = fopen($filename, 'r');
@@ -117,15 +122,14 @@ function deleteContact($delFirst,$delLast){
 
 
 	foreach($contentsArray as $key => $contact){
-		if((strstr($contact,$delFirst) === false) && (strstr($contact,$delLast) === false)){
+		$contactArray = explode(", ",$contact);
+		if((strpos($contactArray[0],$delFirst) == false) && (strpos($contactArray[0],$delLast) == false)){
 			array_push($newContent,$contact);
 			$newString = implode("\n",$newContent);
+		} else {
+			echo "$contact is being deleted" . PHP_EOL;
 		}
 	}
-	$thisDude = strstr($contact,$delFirst);
-
-	echo "$thisDude is being deleted" . PHP_EOL;
-
 	nukeThenWrite('contacts.txt',$newString);
 
 }
@@ -135,7 +139,7 @@ function deleteContact($delFirst,$delLast){
 
 
 
-userInput();
+userInput($userName);
 
 
 
