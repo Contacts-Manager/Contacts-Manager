@@ -36,8 +36,16 @@ function mainMenu($userName)
 			$first = trim(fgets(STDIN));
 			fwrite(STDOUT,"Enter last name: ");
 			$last = trim(fgets(STDIN));
+
+
 			fwrite(STDOUT,"Enter phone number: ");
 			$number = trim(fgets(STDIN));
+			while (strlen($number) !== 10) {
+				echo "Please enter a 10 digit phone number" . PHP_EOL;
+				$number = trim(fgets(STDIN));
+			}
+
+
 			fwrite(STDOUT,"Enter email: ");
 			$email = trim(fgets(STDIN));
 		    addContact($first,$last,$number,$email,$userName);
