@@ -48,6 +48,13 @@ function mainMenu($userName)
 
 			fwrite(STDOUT,"Enter email: ");
 			$email = trim(fgets(STDIN));
+			while (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+				echo "Please enter a valid Email brosif" . PHP_EOL;
+				$email = trim(fgets(STDIN));
+			}
+
+
+
 		    addContact($first,$last,$number,$email,$userName);
 		    echo "DID IT!!";
 		    break;
