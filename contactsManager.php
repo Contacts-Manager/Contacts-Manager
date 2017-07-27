@@ -34,8 +34,16 @@ function mainMenu($userName)
 		case 2:
 			fwrite(STDOUT,"Enter first name: ");
 			$first = trim(fgets(STDIN));
+			while ($first == "" || preg_match("#[0-9]#", $first)){
+				echo "Enter a real name bro" . PHP_EOL;
+				$first = trim(fgets(STDIN));
+			}
 			fwrite(STDOUT,"Enter last name: ");
 			$last = trim(fgets(STDIN));
+			while ($last == "" || preg_match("#[0-9]#", $last)){
+				echo "Enter a real name bro" . PHP_EOL;
+				$last = trim(fgets(STDIN));
+			}
 
 
 			fwrite(STDOUT,"Enter phone number: ");
