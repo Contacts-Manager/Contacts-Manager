@@ -58,7 +58,7 @@ function userInput()
 		    deleteContact($delFirst,$delLast);
 		    break;
 		case 5:
-		    exitManager();
+			echo "Bye Felecia!!!!! " . PHP_EOL;
 		    break;
 		default: 
 			echo "thats not a correct input\n";
@@ -75,7 +75,8 @@ function showContacts()
 	$handle = fopen($filename, 'r');
 	$contents = fread($handle, filesize($filename));
 	fclose($handle);
-	echo $contents;
+	echo $contents . PHP_EOL;
+	userInput();
 	return $contents;
 }
 
@@ -84,6 +85,7 @@ function addContact($first,$last,$number,$email)
 {
 	$message = "$first $last, $number, $email" . PHP_EOL;
 	append("contacts.txt",$message);
+
 }
 
 function searchContacts($search)
@@ -92,14 +94,16 @@ function searchContacts($search)
 	$handle = fopen($filename, 'r');
 	$contents = trim(fread($handle, filesize($filename)));
 	$contentsArray = explode("\n", $contents);
+	fclose($handle);
 	// print_r($contentsArray);
 	foreach($contentsArray as $key => $contact){
 		if(strstr($contact,$search) !== false){
 			echo $contact. PHP_EOL;
 		} else {
-			echo "Could not find a contact with that search criteria!" . PHP_EOL;
+			echo "$contact did not meet the search criteria : $search !" . PHP_EOL;
 		}
 	}
+	return $contact;
 }
 
 function deleteContact($delFirst,$delLast){
@@ -108,16 +112,24 @@ function deleteContact($delFirst,$delLast){
 	$handle = fopen($filename, 'r');
 	$contents = trim(fread($handle, filesize($filename)));
 	$contentsArray = explode("\n", $contents);
+	fclose($handle);
 	// print_r($contentsArray);
+
+
 	foreach($contentsArray as $key => $contact){
 		if((strstr($contact,$delFirst) === false) && (strstr($contact,$delLast) === false)){
 			array_push($newContent,$contact);
 			$newString = implode("\n",$newContent);
-		}	
+		}
 	}
+	$thisDude = strstr($contact,$delFirst);
+
+	echo "$thisDude is being deleted" . PHP_EOL;
+
 	nukeThenWrite('contacts.txt',$newString);
-	fclose($handle);
+
 }
+
 
 
 
