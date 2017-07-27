@@ -34,10 +34,12 @@ function userInput()
 			fwrite(STDOUT,"Enter email: ");
 			$email = trim(fgets(STDIN));
 		    addContact($first,$last,$number,$email);
-		    echo "DIDI IT!!";
+		    echo "DID IT!!";
 		    break;
 		case 3:
-		    searchContacts();
+			fwrite(STDOUT,"Enter a name or part of a name to search: ");
+			$search = trim(fgets(STDIN));
+		    searchContacts($search);
 		    break;
 		case 4:
 		    deleteContact();
@@ -54,14 +56,6 @@ function userInput()
 
 userInput();
 
-function addContact($first,$last,$number,$email)
-{
-	$message = "$first $last, $number, $email" . PHP_EOL;
-
-	append("contacts.txt",$message);
-
-}
-
 function showContacts()
 {
 	$filename = 'contacts.txt';
@@ -70,8 +64,48 @@ function showContacts()
 	fclose($handle);
 	echo $contents;
 	return $contents;
+}
 
 
+function addContact($first,$last,$number,$email)
+{
+	$message = "$first $last, $number, $email" . PHP_EOL;
+
+	append("contacts.txt",$message);
+
+}
+
+function searchContacts($search)
+{
+	$filename = "contacts.txt";
+	$handle = fopen($filename, 'r');
+	$contents = trim(fread($handle, filesize($filename)));
+	$contentsArray = explode("\n", $contents);
+	// print_r($contentsArray);
+	foreach($contentsArray as $key => $contact){
+	if(strstr($contact,$search) !== false){
+		echo $contact. PHP_EOL;
+	} else {
+		echo "BALLS!";
+	}
+}
+
+
+
+
+
+
+
+
+	// foreach($contentsArray as $contact){
+	// 	explode(", " , $contact);
+
+	// 	if(in_array($search, $contact)){
+	// 		echo $contact;
+	// 	} else {
+	// 		echo "fuck you brah search better!";
+	// 	}
+	// }
 }
 
 
