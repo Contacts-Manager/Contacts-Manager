@@ -1,58 +1,65 @@
+
+
 <?php
-/*
-==============Pseudo Code===========================
 
-Create a command line application with the following features:
+function append($filename,$stringToWrite)
+	{
+		$handle = fopen($filename, "a");
+		fwrite($handle,$stringToWrite);
+		fclose($handle);
+	}
 
-Fwrite "Welcome to your contacts manger. use 1 2 3 4 5 to do stuff. " 
+function userInput(){
 
-create error message if user types anything other than 1 2 3 4 5. 
+	fwrite(STDOUT,"Enter 1 to VIEW ALL contacts\nEnter 2 to ADD a new contact\nEnter 3 to SEARCH contacts by name\nEnter 4 to DELETE a contact\nEnter 5 to EXIT Contacts-Manager\n");
 
-switch case for user input to determine what to do next. return function calls based on number input. 
+	$userInput = fgets(STDIN);
 
-open the contacts.txt file
+	switch($userInput) {
+	    case 1:
+		    showContacts();
+		case 2:
+			frwite(STDOUT,"Enter first name");
+			$first = fgets(STDIN);
+			frwite(STDOUT,"Enter last name");
+			$last = fgets(STDIN);
+			frwite(STDOUT,"Enter phone number");
+			$number = fgets(STDIN);
+			frwite(STDOUT,"Enter email");
+			$email = fgets(STDIN);
+		    addContact($first,$last,$number,$email);
+		    echo "DIDI IT!!";
+		    break;
+		case 3:
+		    searchContacts();
+		    break;
+		case 4:
+		    deleteContact();
+		    break;
+		case 5:
+		    exitManager();
+		    break;
+		default: 
+			echo "thats not a correct input\n";
+			break;
 
-1 Show all your contacts
+	}
+}
 
+userInput();
 
+// function addContact($first,$last,$number,$email){
 
-parse all contacts into array and dispay with print_r
-
-
-prompt user "what would you like to do next?"
-
-
-2 Add a new contact
-
-appending a contact via add to file exercise
-first last,2100000000,email
-
-prompt user "what would you like to do next?"
-
-3 Search a contact by name
-
-
-
-
-prompt user "what would you like to do next?"
-
-
-4 Delete an existing contact
-
-prompt user for person to delete.
-
-search for person and display information and ask are you sure you want to delete
-
-
-user confirms with y/n. 
-
-
-
-prompt user "what would you like to do next?"
+// }
 
 
 
-5 exit
 
-"goodbye message and exit app"
-*/
+
+
+
+
+
+
+
+
