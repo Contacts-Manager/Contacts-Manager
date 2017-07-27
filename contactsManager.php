@@ -1,37 +1,35 @@
-
-
 <?php
+	fwrite(STDOUT,"What is your name?");
+	$userName = trim(fgets(STDIN));
 
+//appending to file
 function append($filename,$stringToWrite)
 {
 	$handle = fopen($filename, "a");
 	fwrite($handle,$stringToWrite);
 	fclose($handle);
 }
-
+//nuking file content then rewriting
 function nukeThenWrite($filename,$stringToWrite)
 {
 	$handle = fopen($filename, "w");
 	fwrite($handle,$stringToWrite);
 	fclose($handle);
 }
-
-
-
-function userInput()
-{
-
-	fwrite(STDOUT,"Enter 1 to VIEW ALL contacts" . PHP_EOL .
+//main function
+function mainMenu($userName)
+{	
+	fwrite(STDOUT,PHP_EOL . "Enter 1 to VIEW ALL contacts" . PHP_EOL .
 		"Enter 2 to ADD a new contact" . PHP_EOL . 
 		"Enter 3 to SEARCH contacts by name" . PHP_EOL . 
 		"Enter 4 to DELETE a contact" . PHP_EOL . 
-		"Enter 5 to EXIT Contacts-Manager" . PHP_EOL);
+		"Enter 5 to EXIT Contacts-Manager" . PHP_EOL . PHP_EOL);
 
 	$userInput = trim(fgets(STDIN));
 
 	switch($userInput) {
 	    case 1:
-		    showContacts();
+		    showContacts($userName);
 		    break;
 		case 2:
 			fwrite(STDOUT,"Enter first name: ");
@@ -42,53 +40,51 @@ function userInput()
 			$number = trim(fgets(STDIN));
 			fwrite(STDOUT,"Enter email: ");
 			$email = trim(fgets(STDIN));
-		    addContact($first,$last,$number,$email);
+		    addContact($first,$last,$number,$email,$userName);
 		    echo "DID IT!!";
 		    break;
 		case 3:
 			fwrite(STDOUT,"Enter a name or part of a name to search: ");
 			$search = trim(fgets(STDIN));
-		    searchContacts($search);
+		    searchContacts($search,$userName);
 		    break;
 		case 4:
 			fwrite(STDOUT,"Enter the first name of the contact to delete: ");
 			$delFirst = trim(fgets(STDIN));
 			fwrite(STDOUT,"Enter the last name of the contact to delete: ");
 			$delLast = trim(fgets(STDIN));
-		    deleteContact($delFirst,$delLast);
+		    deleteContact($delFirst,$delLast,$userName);
 		    break;
 		case 5:
-			echo "Bye Felecia!!!!! " . PHP_EOL;
+			closeProgram($userName);
 		    break;
 		default: 
 			echo "thats not a correct input\n";
 			break;
-
 	}
+	
 }
-
-
-
-function showContacts()
+//display all content of contacts.txt
+function showContacts($userName)
 {
 	$filename = 'contacts.txt';
 	$handle = fopen($filename, 'r');
 	$contents = fread($handle, filesize($filename));
 	fclose($handle);
 	echo $contents . PHP_EOL;
-	userInput();
+	mainMenu($userName);
 	return $contents;
 }
-
-
-function addContact($first,$last,$number,$email)
+//adding single contact
+function addContact($first,$last,$number,$email,$userName)
 {
 	$message = "$first $last, $number, $email" . PHP_EOL;
 	append("contacts.txt",$message);
+	mainMenu($userName);
 
 }
-
-function searchContacts($search)
+//parsing through content for specific contact
+function searchContacts($search,$userName)
 {
 	$filename = "contacts.txt";
 	$handle = fopen($filename, 'r');
@@ -103,39 +99,36 @@ function searchContacts($search)
 			echo "$contact did not meet the search criteria : $search !" . PHP_EOL;
 		}
 	}
+	mainMenu($userName);
 	return $contact;
 }
-
-function deleteContact($delFirst,$delLast){
+//deleting one or more contacts that contain search criteria
+function deleteContact($delFirst,$delLast,$userName)
+{
 	$newContent = [];
 	$filename = "contacts.txt";
 	$handle = fopen($filename, 'r');
-	$contents = trim(fread($handle, filesize($filename)));
+	$contents = fread($handle, filesize($filename));
 	$contentsArray = explode("\n", $contents);
 	fclose($handle);
-	// print_r($contentsArray);
-
-
 	foreach($contentsArray as $key => $contact){
-		if((strstr($contact,$delFirst) === false) && (strstr($contact,$delLast) === false)){
+		$contactArray = explode(", ",$contact);
+		if((strpos($contactArray[0],$delFirst) == false) && (strpos($contactArray[0],$delLast) == false)){
 			array_push($newContent,$contact);
 			$newString = implode("\n",$newContent);
+		} else {
+			echo "$contact is being deleted" . PHP_EOL;
 		}
 	}
-	$thisDude = strstr($contact,$delFirst);
-
-	echo "$thisDude is being deleted" . PHP_EOL;
-
 	nukeThenWrite('contacts.txt',$newString);
-
+	mainMenu($userName);
 }
 
-
-
-
-
-
-userInput();
+function closeProgram($userName){
+	echo "Bye $userName!!!!! " . PHP_EOL;
+}
+//calling main function to begin
+mainMenu($userName);
 
 
 
