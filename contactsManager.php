@@ -11,22 +11,26 @@ function append($filename,$stringToWrite)
 
 function userInput(){
 
-	fwrite(STDOUT,"Enter 1 to VIEW ALL contacts\nEnter 2 to ADD a new contact\nEnter 3 to SEARCH contacts by name\nEnter 4 to DELETE a contact\nEnter 5 to EXIT Contacts-Manager\n");
+	fwrite(STDOUT,"Enter 1 to VIEW ALL contacts" . PHP_EOL .
+		"Enter 2 to ADD a new contact" . PHP_EOL . 
+		"Enter 3 to SEARCH contacts by name" . PHP_EOL . 
+		"Enter 4 to DELETE a contact" . PHP_EOL . 
+		"Enter 5 to EXIT Contacts-Manager" . PHP_EOL);
 
-	$userInput = fgets(STDIN);
+	$userInput = trim(fgets(STDIN));
 
 	switch($userInput) {
 	    case 1:
 		    showContacts();
 		case 2:
-			frwite(STDOUT,"Enter first name");
-			$first = fgets(STDIN);
-			frwite(STDOUT,"Enter last name");
-			$last = fgets(STDIN);
-			frwite(STDOUT,"Enter phone number");
-			$number = fgets(STDIN);
-			frwite(STDOUT,"Enter email");
-			$email = fgets(STDIN);
+			fwrite(STDOUT,"Enter first name: ");
+			$first = trim(fgets(STDIN));
+			fwrite(STDOUT,"Enter last name: ");
+			$last = trim(fgets(STDIN));
+			fwrite(STDOUT,"Enter phone number: ");
+			$number = trim(fgets(STDIN));
+			fwrite(STDOUT,"Enter email: ");
+			$email = trim(fgets(STDIN));
 		    addContact($first,$last,$number,$email);
 		    echo "DIDI IT!!";
 		    break;
@@ -48,9 +52,12 @@ function userInput(){
 
 userInput();
 
-// function addContact($first,$last,$number,$email){
+function addContact($first,$last,$number,$email){
+	$message = "$first $last, $number, $email" . PHP_EOL;
 
-// }
+	append("contacts.txt",$message);
+
+}
 
 
 
