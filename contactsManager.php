@@ -110,7 +110,7 @@ function deleteContact($delFirst,$delLast){
 	$newContent = [];
 	$filename = "contacts.txt";
 	$handle = fopen($filename, 'r');
-	$contents = trim(fread($handle, filesize($filename)));
+	$contents = fread($handle, filesize($filename));
 	$contentsArray = explode("\n", $contents);
 	fclose($handle);
 	// print_r($contentsArray);
