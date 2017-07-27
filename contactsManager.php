@@ -3,13 +3,14 @@
 <?php
 
 function append($filename,$stringToWrite)
-	{
-		$handle = fopen($filename, "a");
-		fwrite($handle,$stringToWrite);
-		fclose($handle);
-	}
+{
+	$handle = fopen($filename, "a");
+	fwrite($handle,$stringToWrite);
+	fclose($handle);
+}
 
-function userInput(){
+function userInput()
+{
 
 	fwrite(STDOUT,"Enter 1 to VIEW ALL contacts" . PHP_EOL .
 		"Enter 2 to ADD a new contact" . PHP_EOL . 
@@ -22,6 +23,7 @@ function userInput(){
 	switch($userInput) {
 	    case 1:
 		    showContacts();
+		    break;
 		case 2:
 			fwrite(STDOUT,"Enter first name: ");
 			$first = trim(fgets(STDIN));
@@ -52,12 +54,26 @@ function userInput(){
 
 userInput();
 
-function addContact($first,$last,$number,$email){
+function addContact($first,$last,$number,$email)
+{
 	$message = "$first $last, $number, $email" . PHP_EOL;
 
 	append("contacts.txt",$message);
 
 }
+
+function showContacts()
+{
+	$filename = 'contacts.txt';
+	$handle = fopen($filename, 'r');
+	$contents = fread($handle, filesize($filename));
+	fclose($handle);
+	echo $contents;
+	return $contents;
+
+
+}
+
 
 
 
