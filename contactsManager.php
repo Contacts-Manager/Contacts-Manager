@@ -1,5 +1,5 @@
 <?php
-	fwrite(STDOUT,"What is your name?");
+	fwrite(STDOUT,"What is your name?" . PHP_EOL);
 	$userName = trim(fgets(STDIN));
 
 //appending to file
@@ -16,6 +16,15 @@ function nukeThenWrite($filename,$stringToWrite)
 	fwrite($handle,$stringToWrite);
 	fclose($handle);
 }
+//terminal functions from dougie doug
+function useSameLine(){
+	echo `tput cuu1`;
+	echo `tput el`;
+}
+function clearScreen(){
+	echo `clear && printf '\e[3J'`;
+}
+
 //main function
 function mainMenu($userName)
 {	
@@ -23,7 +32,8 @@ function mainMenu($userName)
 		"Enter 2 to ADD a new contact" . PHP_EOL . 
 		"Enter 3 to SEARCH contacts by name" . PHP_EOL . 
 		"Enter 4 to DELETE a contact" . PHP_EOL . 
-		"Enter 5 to EXIT Contacts-Manager" . PHP_EOL . PHP_EOL);
+		"Enter 5 to EXIT Contacts-Manager" . PHP_EOL . PHP_EOL
+		. "Which would you like to do?" . PHP_EOL . PHP_EOL);
 
 	$userInput = trim(fgets(STDIN));
 
@@ -103,7 +113,9 @@ function addContact($first,$last,$number,$email,$userName)
 {
 	$message = "$first $last, $number, $email" . PHP_EOL;
 	append("contacts.txt",$message);
+	clearScreen();
 	mainMenu($userName);
+
 
 }
 //parsing through content for specific contact

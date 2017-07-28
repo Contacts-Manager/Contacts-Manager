@@ -7,11 +7,4 @@ emmett erfgb, egh, dfg
 hello dude, okay, later
 cody hasters, 234568, 2345
 coders asdfgh, wertyu, sdfgh
-bob jones, 1234567890, sal;dkfjasl;jd
-frank jim, 3333333333, jim@jim.email
- , 2323232323, j@j.email
-name bob, 1212121212, j@j.email
-j j, bob456kyur, j@j.com
-Jim 2, jkjkjkjkjk, jk@jk.email
-333 jkj, 4343434343, j@j.email
-3 jk, 1212121212, j@j.email
+
