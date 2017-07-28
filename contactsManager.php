@@ -54,27 +54,19 @@ function mainMenu($userName)
 				echo "Enter a real name bro" . PHP_EOL;
 				$last = trim(fgets(STDIN));
 			}
-
-
 			fwrite(STDOUT,"Enter phone number: ");
 			$number = trim(fgets(STDIN));
-			while (strlen($number) !== 10) {
+			while (strlen($number) !== 10 && strlen($number) !== 7) {
 				echo "Please enter a 10 digit phone number" . PHP_EOL;
 				$number = trim(fgets(STDIN));
 			}
-
-
 			fwrite(STDOUT,"Enter email: ");
 			$email = trim(fgets(STDIN));
 			while (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 				echo "Please enter a valid Email brosif" . PHP_EOL;
 				$email = trim(fgets(STDIN));
 			}
-
-
-
 		    addContact($first,$last,$number,$email,$userName);
-		    echo "DID IT!!";
 		    break;
 		case 3:
 			fwrite(STDOUT,"Enter a name or part of a name to search: ");
@@ -93,6 +85,8 @@ function mainMenu($userName)
 		    break;
 		default: 
 			echo "thats not a correct input\n";
+			clearScreen();
+			mainMenu($userName);
 			break;
 	}
 	
@@ -104,6 +98,7 @@ function showContacts($userName)
 	$handle = fopen($filename, 'r');
 	$contents = fread($handle, filesize($filename));
 	fclose($handle);
+	clearScreen();
 	echo $contents . PHP_EOL;
 	mainMenu($userName);
 	return $contents;
@@ -134,6 +129,7 @@ function searchContacts($search,$userName)
 			echo "$contact did not meet the search criteria : $search !" . PHP_EOL;
 		}
 	}
+	clearScreen();
 	mainMenu($userName);
 	return $contact;
 }
@@ -156,6 +152,7 @@ function deleteContact($delFirst,$delLast,$userName)
 		}
 	}
 	nukeThenWrite('contacts.txt',$newString);
+	clearScreen();
 	mainMenu($userName);
 }
 
