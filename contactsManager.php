@@ -4,9 +4,27 @@
 fwrite(STDOUT,"Please Enter your Username:" . PHP_EOL);
 $userName = trim(fgets(STDIN));
 
-while (strpos($userName, " ") !== false){
-fwrite(STDOUT,"Get dat space outta der boiii!!!" . PHP_EOL);
-$userName = trim(fgets(STDIN));
+while (strpos($userName, " ") !== false 
+|| strpos($userName, "?") !== false
+|| strpos($userName, "#") !== false
+|| strpos($userName, "&") !== false
+|| strpos($userName, "%") !== false
+|| strpos($userName, "{") !== false
+|| strpos($userName, "}") !== false
+|| strpos($userName, "<") !== false
+|| strpos($userName, ">") !== false
+|| strpos($userName, "*") !== false
+|| strpos($userName, "/") !== false
+|| strpos($userName, "$") !== false
+|| strpos($userName, "!") !== false
+|| strpos($userName, "'") !== false
+|| strpos($userName, "\"") !== false
+|| strpos($userName, ":") !== false
+|| strpos($userName, "@") !== false
+|| strpos($userName, ";") !== false) 
+{
+	fwrite(STDOUT,"Please remove reserved character from Username" . PHP_EOL);
+	$userName = trim(fgets(STDIN));
 }
 
 $filename = $userName . "Contacts.txt";
