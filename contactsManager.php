@@ -1,8 +1,14 @@
 <?php
 
 //UN query
-fwrite(STDOUT,"What is your name?" . PHP_EOL);
+fwrite(STDOUT,"Please Enter your Username:" . PHP_EOL);
 $userName = trim(fgets(STDIN));
+
+while (strpos($userName, " ") !== false){
+fwrite(STDOUT,"Get dat space outta der boiii!!!" . PHP_EOL);
+$userName = trim(fgets(STDIN));
+}
+
 $filename = $userName . "Contacts.txt";
 
 
@@ -62,10 +68,10 @@ function mainMenu($userName, $filename)
 				echo "Enter a real name bro" . PHP_EOL;
 				$last = trim(fgets(STDIN));
 			}
-			fwrite(STDOUT,"Enter phone number with either 7 or 10 digits without dashes: ");
+			fwrite(STDOUT,"Enter phone number with either 7 or 10 numbers with dashes: ");
 			$number = trim(fgets(STDIN));
-			while (strlen($number) !== 10 && strlen($number) !== 7) {
-				echo "Please enter a 10 digit phone number" . PHP_EOL;
+			while ((strlen($number) !== 12 && strlen($number) !== 8) || strpos($number, "-" === false)) {
+				echo "Please enter phone number with either 7 or 10 numbers with dashes: " . PHP_EOL;
 				$number = trim(fgets(STDIN));
 			}
 			fwrite(STDOUT,"Enter email: ");
