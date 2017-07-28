@@ -1,8 +1,38 @@
 <?php
 
 //UN query
-fwrite(STDOUT,"What is your name?" . PHP_EOL);
+fwrite(STDOUT,"Please Enter your Username:" . PHP_EOL);
 $userName = trim(fgets(STDIN));
+
+while (strpos($userName, " ") !== false 
+|| strpos($userName, "?") !== false
+|| strpos($userName, "#") !== false
+|| strpos($userName, "&") !== false
+|| strpos($userName, "%") !== false
+|| strpos($userName, "{") !== false
+|| strpos($userName, "}") !== false
+|| strpos($userName, "<") !== false
+|| strpos($userName, ">") !== false
+|| strpos($userName, "*") !== false
+|| strpos($userName, "/") !== false
+|| strpos($userName, "$") !== false
+|| strpos($userName, "!") !== false
+|| strpos($userName, "'") !== false
+|| strpos($userName, "\"") !== false
+|| strpos($userName, ":") !== false
+|| strpos($userName, "@") !== false
+|| strpos($userName, ";") !== false) 
+{
+	fwrite(STDOUT,"Please remove reserved character from Username" . PHP_EOL);
+	$userName = trim(fgets(STDIN));
+}
+
+$filename = $userName . "Contacts.txt";
+
+
+if(!file_exists($filename)){
+	fwrite(STDOUT,"Welcome to your contact manager, you have no contacts press 2 to add some." . PHP_EOL);
+}
 
 //appending to file
 function append($filename,$stringToWrite)
@@ -28,7 +58,7 @@ function clearScreen(){
 }
 
 //main function
-function mainMenu($userName)
+function mainMenu($userName, $filename)
 {	
 	fwrite(STDOUT,PHP_EOL . "  Enter 1 to VIEW ALL contacts" . PHP_EOL .
 		"  Enter 2 to ADD a new contact" . PHP_EOL . 
@@ -41,7 +71,7 @@ function mainMenu($userName)
 
 	switch($userInput) {
 	    case 1:
-		    showContacts($userName);
+		    showContacts($userName, $filename);
 		    break;
 		case 2:
 			fwrite(STDOUT,"Enter first name: ");
@@ -56,10 +86,10 @@ function mainMenu($userName)
 				echo "Enter a real name bro" . PHP_EOL;
 				$last = trim(fgets(STDIN));
 			}
-			fwrite(STDOUT,"Enter phone number: ");
+			fwrite(STDOUT,"Enter phone number with either 7 or 10 numbers with dashes: ");
 			$number = trim(fgets(STDIN));
-			while (strlen($number) !== 10 && strlen($number) !== 7) {
-				echo "Please enter a 10 digit phone number" . PHP_EOL;
+			while ((strlen($number) !== 12 && strlen($number) !== 8) || strpos($number, "-" === false)) {
+				echo "Please enter phone number with either 7 or 10 numbers with dashes: " . PHP_EOL;
 				$number = trim(fgets(STDIN));
 			}
 			fwrite(STDOUT,"Enter email: ");
@@ -68,19 +98,19 @@ function mainMenu($userName)
 				echo "Please enter a valid Email brosif" . PHP_EOL;
 				$email = trim(fgets(STDIN));
 			}
-		    addContact($first,$last,$number,$email,$userName);
+		    addContact($first,$last,$number,$email,$userName, $filename);
 		    break;
 		case 3:
 			fwrite(STDOUT,"Enter a name or part of a name to search: ");
 			$search = trim(fgets(STDIN));
-		    searchContacts($search,$userName);
+		    searchContacts($search,$userName, $filename);
 		    break;
 		case 4:
 			fwrite(STDOUT,"Enter the first name of the contact to delete: ");
 			$delFirst = trim(fgets(STDIN));
 			fwrite(STDOUT,"Enter the last name of the contact to delete: ");
 			$delLast = trim(fgets(STDIN));
-		    deleteContact($delFirst,$delLast,$userName);
+		    deleteContact($delFirst,$delLast,$userName, $filename);
 		    break;
 		case 5:
 			closeProgram($userName);
@@ -88,37 +118,35 @@ function mainMenu($userName)
 		default: 
 			echo "thats not a correct input\n";
 			clearScreen();
-			mainMenu($userName);
+			mainMenu($userName, $filename);
 			break;
 	}
 	
 }
 //display all content of contacts.txt
-function showContacts($userName)
+function showContacts($userName, $filename)
 {
-	$filename = 'contacts.txt';
 	$handle = fopen($filename, 'r');
 	$contents = fread($handle, filesize($filename));
 	fclose($handle);
 	clearScreen();
 	echo $contents . PHP_EOL;
-	mainMenu($userName);
+	mainMenu($userName, $filename);
 	return $contents;
 }
 //adding single contact
-function addContact($first,$last,$number,$email,$userName)
+function addContact($first,$last,$number,$email,$userName, $filename)
 {
 	$message = "$first $last, $number, $email" . PHP_EOL;
-	append("contacts.txt",$message);
+	append($filename,$message);
 	clearScreen();
-	mainMenu($userName);
+	mainMenu($userName, $filename);
 
 
 }
 //parsing through content for specific contact
-function searchContacts($search,$userName)
+function searchContacts($search,$userName, $filename)
 {
-	$filename = "contacts.txt";
 	$handle = fopen($filename, 'r');
 	$contents = trim(fread($handle, filesize($filename)));
 	$contentsArray = explode("\n", $contents);
@@ -132,14 +160,13 @@ function searchContacts($search,$userName)
 		}
 	}
 	clearScreen();
-	mainMenu($userName);
+	mainMenu($userName, $filename);
 	return $contact;
 }
 //deleting one or more contacts that contain search criteria
-function deleteContact($delFirst,$delLast,$userName)
+function deleteContact($delFirst,$delLast,$userName, $filename)
 {
 	$newContent = [];
-	$filename = "contacts.txt";
 	$handle = fopen($filename, 'r');
 	$contents = fread($handle, filesize($filename));
 	$contentsArray = explode("\n", $contents);
@@ -153,16 +180,16 @@ function deleteContact($delFirst,$delLast,$userName)
 			echo "$contact is being deleted" . PHP_EOL;
 		}
 	}
-	nukeThenWrite('contacts.txt',$newString);
+	nukeThenWrite($filename,$newString);
 	clearScreen();
-	mainMenu($userName);
+	mainMenu($userName, $filename);
 }
 
 function closeProgram($userName){
 	echo "Bye $userName!!!!! " . PHP_EOL;
 }
 //calling main function to begin
-mainMenu($userName);
+mainMenu($userName, $filename);
 
 
 
