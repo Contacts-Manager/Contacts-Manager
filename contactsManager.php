@@ -1,6 +1,8 @@
 <?php
-	fwrite(STDOUT,"What is your name?" . PHP_EOL);
-	$userName = trim(fgets(STDIN));
+
+//UN query
+fwrite(STDOUT,"What is your name?" . PHP_EOL);
+$userName = trim(fgets(STDIN));
 
 //appending to file
 function append($filename,$stringToWrite)
@@ -28,11 +30,11 @@ function clearScreen(){
 //main function
 function mainMenu($userName)
 {	
-	fwrite(STDOUT,PHP_EOL . "Enter 1 to VIEW ALL contacts" . PHP_EOL .
-		"Enter 2 to ADD a new contact" . PHP_EOL . 
-		"Enter 3 to SEARCH contacts by name" . PHP_EOL . 
-		"Enter 4 to DELETE a contact" . PHP_EOL . 
-		"Enter 5 to EXIT Contacts-Manager" . PHP_EOL . PHP_EOL
+	fwrite(STDOUT,PHP_EOL . "  Enter 1 to VIEW ALL contacts" . PHP_EOL .
+		"  Enter 2 to ADD a new contact" . PHP_EOL . 
+		"  Enter 3 to SEARCH contacts by name" . PHP_EOL . 
+		"  Enter 4 to DELETE a contact" . PHP_EOL . 
+		"  Enter 5 to EXIT Contacts-Manager" . PHP_EOL . PHP_EOL
 		. "Which would you like to do?" . PHP_EOL . PHP_EOL);
 
 	$userInput = trim(fgets(STDIN));
