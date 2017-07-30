@@ -132,7 +132,7 @@ function showContacts($userName, $filename)
 	clearScreen();
 	echo $contents . PHP_EOL;
 	mainMenu($userName, $filename);
-	return $contents;
+	// return $contents;
 }
 //adding single contact
 function addContact($first,$last,$number,$email,$userName, $filename)
